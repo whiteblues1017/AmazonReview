@@ -2,6 +2,7 @@ import MeCab
 import re
 
 
+
 def bag_of_noun(text):
     # m = MeCab.Tagger("mecabrc")
     m = MeCab.Tagger("-d /usr/local/lib/mecab/dic/mecab-ipadic-neologd")
@@ -15,6 +16,7 @@ def bag_of_noun(text):
             keywords.append(node.surface)
         node = node.next
     return keywords
+
 
 
 def get_person_name(text):
