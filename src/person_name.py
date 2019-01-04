@@ -1,8 +1,8 @@
+import neologdn
 import pandas as pd
 
 from _config import resources_path
 from monophological_analysis import get_person_name, get_personname_reading
-import neologdn
 
 
 def load_book_review():
@@ -16,26 +16,54 @@ def load_character_list():
     return df
 
 
-def character_fullname_nickname_dict():
-    dict = {}
+def character_fullname_nickname_list():
+    dict ={}
     df = load_character_list()
     for i in range(len(df)):
-        print(get_personname_reading(df['character'][i]))
-        dict[df['character'][i]] = df['other_name'][i]
+        dict[df['character'][i]] = ''.join(get_personname_reading(df['character'][i])).replace('*', '')
+        if df['other_name1'][i] is not '':
+            dict[df['other_name1'][i]] = ''.join(get_personname_reading(df['other_name1'][i])).replace('*', '')
     return dict
 
 
-def print_person_name():
-    df = load_book_review()
-    print(character_fullname_nickname_dict())
-    for text in df['レビュー全文'].tolist():
-        if type(text) == str:
-            text = text.replace('\n', '')
-            # print(text)
-            # print(neologdn.normalize(text))
-            person_name_list = get_person_name(text)
+def author_reading_dict():
+    return {'乾くるみ': ''.join(get_personname_reading('乾くるみ')).replace('*', '')}
+
+
+class PersonName():
+    def __init__(self):
+        self.chara_name_reading = character_fullname_nickname_list()
+        print(self.chara_name_reading)
+        self.author_name_reading = author_reading_dict()
+
+    def extract_character_from_review(self, name_from_text):
+
+        for chara_name in self.chara_name_reading.keys():
+            if name_from_text in chara_name:
+                return '【charaname】'
+        for chara_name_read in self.chara_name_reading.values():
+            if ''.join(get_personname_reading(name_from_text)).replace('*','') in chara_name_read:
+                return '【charaname】'
+
+
+           # chara_name = [chara_name for chara_name in self.chara_name_reading.keys() if name in chara_name]
+           # print(chara_name[0])
+
+    def print_person_name(self):
+        df = load_book_review()
+        for text in df['レビュー全文'].tolist():
+            if type(text) == str:
+                text = text.replace('\n', '')
+                # print(neologdn.normalize(text))
+                person_name_list = get_person_name(text)
+                # print(person_name_list)
+                if person_name_list!=[]:
+                    print(person_name_list)
+                    for name in person_name_list:
+                        print(self.extract_character_from_review(name))
 
 
 if __name__ == '__main__':
-    print_person_name()
+    pn = PersonName()
+    pn.print_person_name()
     # print_person_name()
