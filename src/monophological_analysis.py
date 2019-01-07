@@ -51,7 +51,9 @@ def get_personname_reading(text):
     while node:
         keywords.append(node.feature.split(",")[7])
         node = node.next
-    return keywords
+
+    reading = ''.join(keywords).replace('*', '')
+    return reading
 
 
 def shaping_text(text):
