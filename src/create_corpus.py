@@ -1,5 +1,5 @@
 from _config import resources_path
-from person_name import PersonName, load_book_review, bag_of_noun_person_tag
+from person_name_amazon import PersonName, load_book_review, bag_of_noun_person_tag
 
 from sklearn.model_selection import train_test_split
 
