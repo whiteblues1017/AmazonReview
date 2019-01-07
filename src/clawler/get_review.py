@@ -7,9 +7,9 @@ import math
 from selenium import webdriver
 
 # Chromeを操作
-from _config import home_path, resources_path
+from _config import home_path, resources_path, driver_path
 
-driver = webdriver.Chrome(executable_path=os.path.expanduser('~') + "/driver/chromedriver")
+driver = webdriver.Chrome(executable_path=driver_path)
 
 
 def get_review_per_40(url, page):
