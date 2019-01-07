@@ -10,6 +10,7 @@ from monophological_analysis import get_person_name, get_personname_reading, sha
 
 def load_book_review():
     df = pd.read_csv(resources_path + '/book_review/initiation_Love.csv', quotechar='"')
+    df = df.dropna(subset=['レビュー全文']).fillna
     return df
 
 
