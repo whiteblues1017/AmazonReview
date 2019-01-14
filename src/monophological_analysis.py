@@ -49,7 +49,8 @@ def get_personname_reading(text):
     keywords = []
 
     while node:
-        keywords.append(node.feature.split(",")[7])
+        if len(node.feature.split(","))>7:
+            keywords.append(node.feature.split(",")[7])
         node = node.next
 
     reading = ''.join(keywords).replace('*', '')
