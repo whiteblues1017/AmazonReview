@@ -10,11 +10,16 @@ def get_keys_from_value(d, val):
 
 
 class PersonName():
-    def __init__(self, id):
+    def __init__(self, id,test_train_flg):
         self.id = id
         self.fullname_nickname_dict = {}
         self.reading_name_dict = {}
         self.reading_author_name = {}
+
+        if test_train_flg is 'train':
+            self.book_list_df = load_book_list()
+        else:
+            self.book_list_df = load_answer_book_list()
 
         self.set_reading_name_dict()
         self.set_reading_atuhor_name()
@@ -41,8 +46,7 @@ class PersonName():
 
     # ex {'池井戸潤': 'イケイドジュン'}
     def set_reading_atuhor_name(self):
-        book_list_df = load_book_list()
-        author_name = book_list_df['author'][book_list_df['id'] == self.id]
+        author_name = self.book_list_df['author'][self.book_list_df['id'] == self.id]
         author_name = author_name.to_string(index=None)
         self.reading_author_name[author_name] = get_personname_reading(author_name)
 

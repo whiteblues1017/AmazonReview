@@ -1,6 +1,14 @@
 import MeCab
 import re
+import emoji
 
+
+def remove_emoji(src_str):
+    return ''.join(c for c in src_str if c not in emoji.UNICODE_EMOJI)
+
+def remove_kaomoji(node):
+    if node.feature.split(",")[7]=='カオモジ' and node.feature.split(",")[0] == "記号":
+        return ''
 
 def bag_of_noun(text):
     # m = MeCab.Tagger("mecabrc")
@@ -30,7 +38,7 @@ def get_person_name(text):
 
             if node.feature.split(",")[1] == "固有名詞" and node.feature.split(",")[2] == "人名":
                 if node.next.feature.split(",")[2] == "人名" and node.next.feature.split(",")[1] != "接尾":
-                    keywords.append(node.surface+node.next.surface)
+                    keywords.append(node.surface + node.next.surface)
                     node = node.next
                 else:
                     keywords.append(node.surface)
@@ -49,7 +57,7 @@ def get_personname_reading(text):
     keywords = []
 
     while node:
-        if len(node.feature.split(","))>7:
+        if len(node.feature.split(",")) > 7:
             keywords.append(node.feature.split(",")[7])
         node = node.next
 
@@ -64,5 +72,6 @@ def shaping_text(text):
     text = re.sub('\[.+?\]', "", text)
     text = re.sub('\n', '', text)
     text = re.sub('\r', '', text)
+    text = remove_emoji(text)
 
     return text
