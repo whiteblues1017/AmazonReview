@@ -47,8 +47,9 @@ class PersonName():
     # ex {'池井戸潤': 'イケイドジュン'}
     def set_reading_atuhor_name(self):
         author_name = self.book_list_df['author'][self.book_list_df['id'] == self.id]
-        author_name = author_name.to_string(index=None)
-        self.reading_author_name[author_name] = get_personname_reading(author_name)
+        author_names = author_name.to_string(index=None)
+        for author_name in author_names.split(','):
+            self.reading_author_name[author_name] = get_personname_reading(author_name)
 
     def get_reading_name_dick(self):
         return self.reading_name_dict
@@ -104,7 +105,4 @@ class PersonName():
 
 
 if __name__ == '__main__':
-    pn = PersonName('552620')
-    pn.set_reading_name_dict()
-
-    print(pn.reading_author_name)
+    load_character('569615')

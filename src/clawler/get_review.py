@@ -42,7 +42,7 @@ def open_book_top_page(title, id):
     page_max_count = math.ceil(int(review_count) / 40)
     print(page_max_count)
 
-    with open(resources_path + '/book_meter/'+title+'.csv', 'w') as fw:
+    with open(resources_path + '/book_meter/'+str(id)+'.csv', 'w') as fw:
         fw.write('"date","user_name","netabare","text"\n')
         for page in range(page_max_count):
             fw.write(get_review_per_40(url, page))
@@ -51,6 +51,6 @@ def open_book_top_page(title, id):
 if __name__ == '__main__':
     df = pd.read_csv(resources_path+'/booklist.csv',dtype=str)
     for i in range(len(df)):
-        if not os.path.exists(resources_path + '/book_meter/' + df['title'][i] + '.csv'):
+        if not os.path.exists(resources_path + '/book_meter/' + df['id'][i] + '.csv'):
             open_book_top_page(df['title'][i],df['id'][i])
     driver.close()

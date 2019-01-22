@@ -10,6 +10,11 @@ def load_book_list():
     return df
 
 
+def load_rand_book_list(max, no):
+    df = pd.read_csv(resources_path + '/rand_booklist/' + str(max) + '/no_' + str(no) + '.csv', dtype=str)
+    return df
+
+
 def load_answer_book_list():
     df = pd.read_csv(resources_path + '/answerlist.csv', dtype=str)
     return df
@@ -34,7 +39,13 @@ def load_amazon_review(id):
 
 
 def load_class_result():
-    df = pd.read_csv(results_path + '/class_result.csv',quotechar='"',dtype='str')
+    df = pd.read_csv(results_path + '/class_result_100.csv', quotechar='"', dtype='str')
+    df = df.fillna('')
+    return df
+
+
+def load_class_result_rand(max, no):
+    df = pd.read_csv(results_path + '/'+str(max)+'/class_result_no'+str(no)+'.csv', quotechar='"', dtype='str')
     df = df.fillna('')
     return df
 
