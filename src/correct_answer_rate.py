@@ -1,6 +1,7 @@
 import math
 
 import numpy as np
+from sklearn.metrics import confusion_matrix, accuracy_score, precision_score, f1_score, recall_score
 
 from load_file import *
 
@@ -9,81 +10,73 @@ class CalcRate():
     def __init__(self, max, no):
         self.max = max
         self.no = no
+        self.df = load_class_result_rand(self.max, self.no) if max != 100 else load_class_result_100()
 
-    def calculate_all_answer_rate(self):
-        df = load_class_result_rand(self.max, self.no)
+    def load_answer(self):
+        answer = [1 if x is not '' else 0 for x in self.df['answer'].tolist()]
+        nb_answer = [1 if x != 'false' else 0 for x in self.df['nb_answer'].tolist()]
+        tp, fn, fp, tn = confusion_matrix(answer, nb_answer).ravel()
 
-        correct_amount = 0
-        false_amount = 0
-        for i in range(len(df)):
-            if df['answer'][i] != '' and df['nb_answer'][i] == 'true':
-                correct_amount += 1
-            elif df['answer'][i] == '' and df['nb_answer'][i] == 'false':
-                correct_amount += 1
-            else:
-                false_amount += 1
-        return correct_amount, len(df), correct_amount / len(df)
-
-    def calculate_nb_true_rate(self):
-        df = load_class_result()
-        correct_amount = 0
-        false_amount = 0
-        for i in range(len(df)):
-            if df['nb_answer'][i] == 'true':
-                if df['answer'][i] != '' and df['nb_answer'][i] == 'true':
-                    correct_amount += 1
-                elif df['answer'][i] == '' and df['nb_answer'][i] == 'false':
-                    correct_amount += 1
-                else:
-                    false_amount += 1
-        return correct_amount, df['nb_answer'][df['nb_answer'] == 'true'].count(), correct_amount / df['nb_answer'][
-            df['nb_answer'] == 'true'].count()
-
-    def calculate_nb_false_rate(self):
-        df = load_class_result()
-        correct_amount = 0
-        false_amount = 0
-        for i in range(len(df)):
-            if df['nb_answer'][i] == 'false':
-                if df['answer'][i] != '' and df['nb_answer'][i] == 'true':
-                    correct_amount += 1
-                elif df['answer'][i] == '' and df['nb_answer'][i] == 'false':
-                    correct_amount += 1
-                else:
-                    false_amount += 1
-
-        return correct_amount, correct_amount / df['nb_answer'][df['nb_answer'] == 'false'].count(), df['nb_answer'][
-            df['nb_answer'] == 'false'].count()
+        return answer, nb_answer
 
 
-def calculate_all_answer_rate():
-    df = pd.read_csv(results_path+'/class_result_use_train_data.csv',dtype=str,quotechar='"')
+def export_f1_pre_recall_accu_rate():
+    with open(results_path + '/experiment/analysis/100_score.csv', 'w')as fw:
+        fw.write('precision,recall,f_measure,accuracy\n')
+        cr = CalcRate(100, 0)
+        y_true, y_predict = cr.load_answer()
 
-    correct_amount = 0
-    false_amount = 0
-    for i in range(len(df)):
-        if df['answer'][i] != 'false' and df['nb_answer'][i] == 'true':
-            correct_amount += 1
-        elif df['answer'][i] == 'false' and df['nb_answer'][i] == 'false':
-            correct_amount += 1
-        else:
-            false_amount += 1
-    return correct_amount, len(df), correct_amount / len(df)
+        fw.write(str(precision_score(y_true, y_predict)) + ',' +
+                 str(recall_score(y_true, y_predict)) + ',' +
+                 str(f1_score(y_true, y_predict)) + ',' +
+                 str(accuracy_score(y_true, y_predict)) + '\n')
+
+
+def export_rand_f1_pre_recall_accu_rate():
+    with open(results_path + '/experiment/analysis/50_score.csv', 'w')as fw:
+        fw.write('precision,recall,f_measure,accuracy\n')
+        for i in range(5):
+            cr = CalcRate(50, i)
+            y_true, y_predict = cr.load_answer()
+
+            fw.write(str(precision_score(y_true, y_predict)) + ',' +
+                     str(recall_score(y_true, y_predict)) + ',' +
+                     str(f1_score(y_true, y_predict)) + ',' +
+                     str(accuracy_score(y_true, y_predict)) + '\n')
+
+
+class CalcRatePre():
+    def __init__(self):
+        self.df_amazon = load_pre_experiment_amazon()
+        self.df_0to15 = load_pre_experiment_0to15()
+
+    def load_answer_0to15(self):
+        answer = [1 if x != 'false' else 0 for x in self.df_0to15['answer'].tolist()]
+        nb_answer = [1 if x != 'false' else 0 for x in self.df_0to15['nb_answer'].tolist()]
+        tp, fn, fp, tn = confusion_matrix(answer, nb_answer).ravel()
+
+        return answer, nb_answer
+
+    def load_answer_amazon(self):
+        answer = [1 if x is not '' else 0 for x in self.df_amazon['answer'].tolist()]
+        nb_answer = [1 if x != 'false' else 0 for x in self.df_amazon['nb_answer'].tolist()]
+        tp, fn, fp, tn = confusion_matrix(answer, nb_answer).ravel()
+
+        return answer, nb_answer
+
+
+def export_pre_f1_pre_recall_accu_rate():
+    crp = CalcRatePre()
+    with open(results_path + '/pre_experiment/analysis/amazon_score.csv', 'w')as fw:
+        fw.write('precision,recall,f_measure,accuracy\n')
+        y_true, y_predict = crp.load_answer_amazon()
+        fw.write(str(precision_score(y_true, y_predict)) + ',' +
+                 str(recall_score(y_true, y_predict)) + ',' +
+                 str(f1_score(y_true, y_predict)) + ',' +
+                 str(accuracy_score(y_true, y_predict)) + '\n')
 
 
 if __name__ == '__main__':
-    print(calculate_all_answer_rate())
-    """
-    with open(results_path + '/analysis/15.csv', 'w')as fw:
-        rates = []
-        trues = []
-        amounts = []
-        for i in range(0, 5):
-            cr = CalcRate(15, i)
-            true, amount, rate = cr.calculate_all_answer_rate()
-            rates.append(rate)
-            trues.append(true)
-            amounts.append(amount)
-            fw.write(str(true) + ',' + str(amount) + ',' + str(rate) + '\n')
-        fw.write(str(np.average(trues)) + ',' + str(np.average(amounts)) + ',' + str(np.average(rates)))
-    """
+    # export_rand_f1_pre_recall_accu_rate()
+    # export_f1_pre_recall_accu_rate()
+    export_pre_f1_pre_recall_accu_rate()
