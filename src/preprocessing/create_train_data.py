@@ -61,16 +61,16 @@ def export_corpus_rand(max, no):
 
 def export_corpus_all():
     # 学習作品数100の場合
-    book_list_df = load_book_list()
+    book_list_df = load_book_list()[:15]
 
-    with open(resources_path + '/corpus/100/netabare_true.txt', 'w')as fw_true:
+    with open(resources_path + '/corpus/pre_experiment/verb/netabare_true.txt', 'w')as fw_true:
         for id in book_list_df['id'].tolist():
-            with open(resources_path + '/corpus/book_meter/' + str(id) + '/netabare_true.txt', 'r')as fr:
+            with open(resources_path + '/corpus/book_meter/verb/' + str(id) + '/netabare_true.txt', 'r')as fr:
                 fw_true.write(fr.readline())
 
-    with open(resources_path + '/corpus/100/netabare_false.txt', 'w')as fw_false:
+    with open(resources_path + '/corpus/pre_experiment/verb/netabare_false.txt', 'w')as fw_false:
         for id in book_list_df['id'].tolist():
-            with open(resources_path + '/corpus/book_meter/' + str(id) + '/netabare_false.txt', 'r')as fr:
+            with open(resources_path + '/corpus/book_meter/verb/' + str(id) + '/netabare_false.txt', 'r')as fr:
                 fw_false.write(fr.readline())
 
 
@@ -117,7 +117,8 @@ def multiprocess_export_coupus():
 
 
 if __name__ == '__main__':
-    multiprocess_export_coupus()
+    # multiprocess_export_coupus()
+    export_corpus_all()
     # export_corpus_all()
     # for i in range(0,5):
     #    export_corpus_rand(50, i)
