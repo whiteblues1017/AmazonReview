@@ -1,7 +1,9 @@
-from _config import results_path , resources_path
-from naive_bayes import NaiveBayes
-from preprocessing.create_train_data import bag_of_noun_verb_person_tag, PersonName
-from load_file import  *
+from multiprocessing.pool import Pool
+
+from naive_bayes.load_file import  *
+from naive_bayes.naive_bayes import NaiveBayes
+from naive_bayes.person_name import PersonName
+from naive_bayes.preprocessing.create_train_data import bag_of_noun_verb_person_tag
 
 
 class NaiveBayeseReview():
@@ -88,6 +90,24 @@ class NaiveBayeseReviewPre():
         with open(results_path + '/class_result_use_train_data_verb_basic.csv', 'w')as fw:
             fw.write('"id","answer","nb_answer","text"\n')
             fw.write(self.train_data_classifier())
+
+def multiprocess_export_coupus():
+    old_id_list = load_book_list()['id'].tolist()[:15]
+    id_list = []
+    for id in old_id_list:
+        if not os.path.exists(resources_path + '/corpus/book_meter/noun_verb_basic/' + id + '/netabare_false.txt'):
+            id_list.append(id)
+
+    print(id_list)
+    split_list = [id_list[i:i + int(len(id_list) / 3)] for i in
+                  range(0, len(id_list), int(len(id_list) / 3))]
+
+    print(split_list)
+    # 並列数を決めて、Poolを用意
+    pool = Pool(4)
+
+    # 並列処理実行
+    pool.map(export_corpus_the_work, split_list)
 
 
 if __name__ == '__main__':
