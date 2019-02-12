@@ -41,9 +41,12 @@ def bag_of_noun_verb_person_tag(text, pn):
             else:
                 keywords.append(pn.return_tag_from_review(node.surface))
 
-        elif node.feature.split(",")[0] == "名詞" or node.feature.split(",")[0] == '動詞':
-            # else:
+        elif node.feature.split(",")[0] == "名詞" :
             keywords.append(node.surface)
+        elif node.feature.split(",")[0] == '動詞':
+            if node.feature.split(',')[6]=='*':
+                print(node.feature.split(',')[6])
+            keywords.append(node.feature.split(",")[6])
         node = node.next
     return keywords
 
@@ -83,8 +86,8 @@ def export_corpus_all():
 
 def export_corpus_the_work(id_list):
     for id in id_list:
-        if not os.path.exists(resources_path + '/corpus/book_meter/noun_verb/' + id):
-            os.mkdir(resources_path + '/corpus/book_meter/noun_verb/' + id)
+        if not os.path.exists(resources_path + '/corpus/book_meter/noun_verb_basic/' + id):
+            os.mkdir(resources_path + '/corpus/book_meter/noun_verb_basic/' + id)
 
         fw_true_str = ''
         fw_false_str = ''
@@ -98,8 +101,8 @@ def export_corpus_the_work(id_list):
         for text in book_meter_df['text'][book_meter_df['netabare'] == 'false'].tolist():
             fw_false_str += ' '.join(bag_of_noun_verb_person_tag(text, pn))
 
-        with open(resources_path + '/corpus/book_meter/noun_verb/' + id + '/netabare_true.txt', 'w')as fw_true:
-            with open(resources_path + '/corpus/book_meter/noun_verb/' + id + '/netabare_false.txt', 'w')as fw_false:
+        with open(resources_path + '/corpus/book_meter/noun_verb_basic/' + id + '/netabare_true.txt', 'w')as fw_true:
+            with open(resources_path + '/corpus/book_meter/noun_verb_basic/' + id + '/netabare_false.txt', 'w')as fw_false:
                 fw_true.write(fw_true_str)
                 fw_false.write(fw_false_str)
 
@@ -108,7 +111,7 @@ def multiprocess_export_coupus():
     old_id_list = load_book_list()['id'].tolist()[:15]
     id_list = []
     for id in old_id_list:
-        if not os.path.exists(resources_path + '/corpus/book_meter/noun_verb/' + id + '/netabare_false.txt'):
+        if not os.path.exists(resources_path + '/corpus/book_meter/noun_verb_basic/' + id + '/netabare_false.txt'):
             id_list.append(id)
 
     print(id_list)

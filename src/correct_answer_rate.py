@@ -51,6 +51,7 @@ class CalcRatePre():
         self.df_0to15 = load_pre_experiment_0to15()
 
     def load_answer_0to15(self):
+        print(len(self.df_0to15))
         answer = [1 if x != 'false' else 0 for x in self.df_0to15['answer'].tolist()]
         nb_answer = [1 if x != 'false' else 0 for x in self.df_0to15['nb_answer'].tolist()]
         tp, fn, fp, tn = confusion_matrix(answer, nb_answer).ravel()
@@ -66,10 +67,10 @@ class CalcRatePre():
 
 
 def export_pre_f1_pre_recall_accu_rate():
-    crp = CalcRate(100,0)
-    with open(results_path + '/pre_experiment/noun_verb/analysis/amazon_score.csv', 'w')as fw:
+    crp = CalcRatePre()
+    with open(results_path + '/pre_experiment/noun_verb/analysis/0to15_score.csv', 'w')as fw:
         fw.write('precision,recall,f_measure,accuracy\n')
-        y_true, y_predict = crp.load_answer()
+        y_true, y_predict = crp.load_answer_0to15()
         fw.write(str(precision_score(y_true, y_predict)) + ',' +
                  str(recall_score(y_true, y_predict)) + ',' +
                  str(f1_score(y_true, y_predict)) + ',' +

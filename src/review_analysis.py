@@ -47,7 +47,7 @@ class NaiveBayeseReviewPre():
         category = ['true', 'false']
         for cate in category:
             print(cate)
-            with open(resources_path + '/corpus/pre_experiment/noun_verb/netabare_' + cate + '.txt')as fr:
+            with open(resources_path + '/corpus/pre_experiment/noun_verb_basic/netabare_' + cate + '.txt')as fr:
                 self.nb.train(fr.readline(), cate)
 
     def train_data_classifier(self):
@@ -85,13 +85,13 @@ class NaiveBayeseReviewPre():
         return fw_str
 
     def export_classifier_result(self):
-        with open(results_path + '/class_result_use_train_data_verb.csv', 'w')as fw:
+        with open(results_path + '/class_result_use_train_data_verb_basic.csv', 'w')as fw:
             fw.write('"id","answer","nb_answer","text"\n')
             fw.write(self.train_data_classifier())
 
 
 if __name__ == '__main__':
-    nbr = NaiveBayeseReview()
+    nbr = NaiveBayeseReviewPre()
     nbr.train_review()
     nbr.export_classifier_result()
     """

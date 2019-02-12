@@ -3,6 +3,8 @@ import sys
 
 
 class NaiveBayes:
+    # P(C|D)の計算には多項モデルを使用
+    # ベルヌーイモデルは出現しない単語の確率も考慮するので計算量も大きいため使用しなかった
     def __init__(self):
         # 学習データの全単語の集合(加算スムージング用)
         self.vocabularies = set()

@@ -52,7 +52,7 @@ def load_class_result_rand(max, no):
 
 
 def load_pre_experiment_0to15():
-    df = pd.read_csv(results_path + '/pre_experiment/class_result_use_train_data.csv', dtype='str', quotechar='"')
+    df = pd.read_csv(results_path + '/pre_experiment/noun_verb/class_result_use_train_data_verb_basic.csv', dtype='str', quotechar='"')
     df = df.fillna('')
     return df
 
