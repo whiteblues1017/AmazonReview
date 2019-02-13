@@ -21,7 +21,7 @@ class CalcRate():
 
 
 def export_f1_pre_recall_accu_rate():
-    with open(results_path + '/experiment/analysis/100_score.csv', 'w')as fw:
+    with open(results_path + '/eva_experiment/analysis/100_score.csv', 'w')as fw:
         fw.write('precision,recall,f_measure,accuracy\n')
         cr = CalcRate(100, 0)
         y_true, y_predict = cr.load_answer()
@@ -33,10 +33,10 @@ def export_f1_pre_recall_accu_rate():
 
 
 def export_rand_f1_pre_recall_accu_rate():
-    with open(results_path + '/experiment/analysis/50_score.csv', 'w')as fw:
+    with open(results_path + '/eva_experiment/analysis/15_score.csv', 'w')as fw:
         fw.write('precision,recall,f_measure,accuracy\n')
         for i in range(5):
-            cr = CalcRate(50, i)
+            cr = CalcRate(15, i)
             y_true, y_predict = cr.load_answer()
 
             fw.write(str(precision_score(y_true, y_predict)) + ',' +
@@ -47,7 +47,7 @@ def export_rand_f1_pre_recall_accu_rate():
 
 class CalcRatePre():
     def __init__(self):
-        self.df_amazon = load_pre_experiment_amazon()
+        # self.df_amazon = load_pre_experiment_amazon()
         self.df_0to15 = load_pre_experiment_0to15()
 
     def load_answer_0to15(self):
@@ -68,7 +68,7 @@ class CalcRatePre():
 
 def export_pre_f1_pre_recall_accu_rate():
     crp = CalcRatePre()
-    with open(results_path + '/pre_experiment/noun_verb/analysis/0to15_score.csv', 'w')as fw:
+    with open(results_path + '/pre_experiment/noun_verb_basic/analysis/0to15_score.csv', 'w')as fw:
         fw.write('precision,recall,f_measure,accuracy\n')
         y_true, y_predict = crp.load_answer_0to15()
         fw.write(str(precision_score(y_true, y_predict)) + ',' +
@@ -78,6 +78,6 @@ def export_pre_f1_pre_recall_accu_rate():
 
 
 if __name__ == '__main__':
-    # export_rand_f1_pre_recall_accu_rate()
-    # export_f1_pre_recall_accu_rate()
-    export_pre_f1_pre_recall_accu_rate()
+    export_rand_f1_pre_recall_accu_rate()
+    #export_f1_pre_recall_accu_rate()
+    # export_pre_f1_pre_recall_accu_rate()

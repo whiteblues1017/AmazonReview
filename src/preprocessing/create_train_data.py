@@ -60,12 +60,12 @@ def export_corpus_rand(max, no):
 
     with open(resources_path + '/corpus/' + str(max) + '/no_' + str(no) + '/netabare_true.txt', 'w')as fw_true:
         for id in book_list_df['id'].tolist():
-            with open(resources_path + '/corpus/book_meter/' + str(id) + '/netabare_true.txt', 'r')as fr:
+            with open(resources_path + '/corpus/book_meter/noun_verb_basic/' + str(id) + '/netabare_true.txt', 'r')as fr:
                 fw_true.write(fr.readline())
 
     with open(resources_path + '/corpus/' + str(max) + '/no_' + str(no) + '/netabare_false.txt', 'w')as fw_false:
         for id in book_list_df['id'].tolist():
-            with open(resources_path + '/corpus/book_meter/' + str(id) + '/netabare_false.txt', 'r')as fr:
+            with open(resources_path + '/corpus/book_meter/noun_verb_basic/' + str(id) + '/netabare_false.txt', 'r')as fr:
                 fw_false.write(fr.readline())
 
 
@@ -75,12 +75,12 @@ def export_corpus_all():
 
     with open(resources_path + '/corpus/100/netabare_true.txt', 'w')as fw_true:
         for id in book_list_df['id'].tolist():
-            with open(resources_path + '/corpus/book_meter/' + str(id) + '/netabare_true.txt', 'r')as fr:
+            with open(resources_path + '/corpus/book_meter/noun_verb_basic/' + str(id) + '/netabare_true.txt', 'r')as fr:
                 fw_true.write(fr.readline())
 
     with open(resources_path + '/corpus/100/netabare_false.txt', 'w')as fw_false:
         for id in book_list_df['id'].tolist():
-            with open(resources_path + '/corpus/book_meter/' + str(id) + '/netabare_false.txt', 'r')as fr:
+            with open(resources_path + '/corpus/book_meter/noun_verb_basic/' + str(id) + '/netabare_false.txt', 'r')as fr:
                 fw_false.write(fr.readline())
 
 
@@ -108,7 +108,7 @@ def export_corpus_the_work(id_list):
 
 
 def multiprocess_export_coupus():
-    old_id_list = load_book_list()['id'].tolist()[:15]
+    old_id_list = load_book_list()['id'].tolist()[15:]
     id_list = []
     for id in old_id_list:
         if not os.path.exists(resources_path + '/corpus/book_meter/noun_verb_basic/' + id + '/netabare_false.txt'):
@@ -127,7 +127,8 @@ def multiprocess_export_coupus():
 
 
 if __name__ == '__main__':
-    multiprocess_export_coupus()
+    #multiprocess_export_coupus()
+    export_corpus_all()
     # export_corpus_all()
     # for i in range(0,5):
-    #    export_corpus_rand(50, i)
+    #   export_corpus_rand(50, i)

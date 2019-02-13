@@ -39,20 +39,20 @@ def load_amazon_review(id):
 
 
 def load_class_result_100():
-    df = pd.read_csv(results_path + '/experiment/class_result_100.csv', quotechar='"', dtype='str')
+    df = pd.read_csv(results_path + '/eva_experiment/class_result_100.csv', quotechar='"', dtype='str')
     df = df.fillna('')
     return df
 
 
 def load_class_result_rand(max, no):
-    df = pd.read_csv(results_path + '/experiment/' + str(max) + '/class_result_no' + str(no) + '.csv', quotechar='"',
+    df = pd.read_csv(results_path + '/eva_experiment/' + str(max) + '/class_result_no' + str(no) + '.csv', quotechar='"',
                      dtype='str')
     df = df.fillna('')
     return df
 
 
 def load_pre_experiment_0to15():
-    df = pd.read_csv(results_path + '/pre_experiment/noun_verb/class_result_use_train_data_verb_basic.csv', dtype='str', quotechar='"')
+    df = pd.read_csv(results_path + '/pre_experiment/noun_verb_basic/class_result_use_train_data_verb_basic.csv', dtype='str', quotechar='"')
     df = df.fillna('')
     return df
 
